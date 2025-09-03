@@ -2,12 +2,8 @@ package com.example.semana2_1.views
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -15,13 +11,7 @@ import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.ElevatedButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Shapes
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,10 +24,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import com.example.semana2_1.R
+import com.example.semana2_1.components.TopBar
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -70,19 +63,25 @@ fun View1(saveScreen : NavHostController){
 
     // Widget to alocate different areas on the screen
     // It is like a frame or a container for other components
-    Scaffold() {
+    Scaffold(
+        modifier = Modifier.fillMaxWidth(),
+        topBar = {
+            TopBar (onOpenDrawer = { }  )
+        }
+    ) {
       Principal(saveScreen)
     }
 }
 
 @Composable
 fun Principal(saveScreen : NavHostController){
-    var userEmail by remember { mutableStateOf("") }
-    var userPassword by remember { mutableStateOf("") }
+    var userEmail by remember { mutableStateOf("ADMIN") }
+    var userPassword by remember { mutableStateOf("UPC123") }
 
     Column(
         Modifier
             .padding(40.dp)
+            .padding(vertical = 20.dp)
             .fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
@@ -93,7 +92,7 @@ fun Principal(saveScreen : NavHostController){
             modifier = Modifier
                 .width(230.dp)
                 .height(230.dp)
-                .padding(vertical = 20.dp)
+                .padding(vertical = 40.dp)
         )
 
         Text(text = "LOGIN USER",
@@ -174,6 +173,55 @@ fun Principal(saveScreen : NavHostController){
             }
         )
 
+        var isDisplay by remember { mutableStateOf(false) }
+
+        if (isDisplay){
+            Dialog(onDismissRequest = {isDisplay=false}) {
+                Card(modifier = Modifier
+                    .height(300.dp),
+                    shape = RoundedCornerShape(15.dp)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(20.dp),
+                        verticalArrangement = Arrangement.Center,
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        Text(text = "‼️FATAL ERROR",
+                            fontSize = 22.5.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.Red,
+                            textAlign = TextAlign.Center
+                        )
+
+                        Spacer(modifier = Modifier.size(20.dp))
+
+                        Text(text = "️❌THE USER OR PASSWORD IS INCORRECT",
+                            fontSize = 22.5.sp,
+                            fontWeight = FontWeight.Thin,
+                            color = Color.Blue,
+                            textAlign = TextAlign.Center
+                        )
+
+                        Spacer(modifier = Modifier.size(20.dp))
+
+                        Button(
+                            onClick = {
+                                isDisplay = false
+                            }
+                        ) {
+                            Text(text = "Try Again",
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.Bold,
+                                color = Color.White,
+                                textAlign = TextAlign.Center)
+                        }
+                    }
+                }
+            }
+        }
+
         ElevatedButton(
             modifier = Modifier
                 .padding(10.dp)
@@ -184,8 +232,13 @@ fun Principal(saveScreen : NavHostController){
                 Color.Blue
             ),
             onClick = {
-                if (userEmail.isNotEmpty() && userPassword.isNotEmpty()){
+                /*if (userEmail.isNotEmpty() && userPassword.isNotEmpty()){
                     saveScreen.navigate("V2")
+                }*/
+                if (userEmail == "ADMIN"  && userPassword == "UPC123"){
+                    saveScreen.navigate("V2")
+                } else {
+                    isDisplay = true
                 }
             }
         ) {
@@ -194,7 +247,7 @@ fun Principal(saveScreen : NavHostController){
                 fontWeight = FontWeight.Bold,
                 color = Color.White,
                 modifier = Modifier.padding(5.dp)
-                )
+            )
         }
     }
 }
