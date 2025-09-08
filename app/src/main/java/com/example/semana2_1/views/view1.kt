@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import com.example.semana2_1.R
+import com.example.semana2_1.components.ButtonApp
 import com.example.semana2_1.components.TopBar
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -65,9 +66,15 @@ fun View1(saveScreen : NavHostController){
     // It is like a frame or a container for other components
     Scaffold(
         modifier = Modifier.fillMaxWidth(),
+
         topBar = {
             TopBar (onOpenDrawer = { }  )
+        },
+
+        bottomBar = {
+            ButtonApp()
         }
+
     ) {
       Principal(saveScreen)
     }
@@ -81,7 +88,7 @@ fun Principal(saveScreen : NavHostController){
     Column(
         Modifier
             .padding(40.dp)
-            .padding(vertical = 20.dp)
+            .padding(vertical = 45.dp)
             .fillMaxWidth(),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally

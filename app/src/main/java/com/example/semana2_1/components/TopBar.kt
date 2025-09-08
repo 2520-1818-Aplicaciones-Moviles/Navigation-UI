@@ -25,7 +25,9 @@ fun TopBar(onOpenDrawer: () -> Unit) {
                 color = Color.White)
         },
         navigationIcon = {
-            IconButton( onClick = { }) {
+            IconButton( onClick = {
+                onOpenDrawer()
+            }) {
                 Icon(
                     imageVector = Icons.Default.Menu,
                     contentDescription = "Admin Menu",
